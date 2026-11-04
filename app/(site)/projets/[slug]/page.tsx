@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getProjectBySlug } from "@/lib/queries";
+
+export const revalidate = 60;
+
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const p = await getProjectBySlug(slug);
+  if (!p) notFound();
+
+  return (
+    <article className="mx-auto max-w-4xl px-6 pt-16">
+      <Link href="/projets" className="text-paper/60 hover:text-lime">Retour aux projets</Link>
+      <h1 className="mt-6 text-5xl font-extrabold leading-tight tracking-tight md:text-7xl">{p.title}</h1>
+      <p className="mt-6 max-w-2xl text-xl text-paper/80">{p.summary}</p>
+      <ul className="mt-8 flex flex-wrap gap-2">
+        {p.stack.map((s) => <li key={s} className="border border-lime/60 px-3 py-1 text-sm text-lime">{s}</li>)}
+      </ul>
+      {p.imageUrl && (
+        <div className="mt-12 border border-lime p-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={p.imageUrl} alt={p.title} className="w-full" />
+        </div>
+      )}
+      <div className="mt-12 max-w-2xl whitespace-pre-line text-lg leading-relaxed text-paper/85">{p.description}</div>
+      <div className="mt-12 flex flex-wrap gap-4">
+        {p.liveUrl && <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-lime">Voir le site</a>}
+        {p.repoUrl && <a href={p.repoUrl} target="_blank" rel="noopener noreferrer" className="btn border-paper/40 bg-transparent hover:bg-paper hover:text-ink">Voir le code</a>}
+      </div>
+    </article>
+  );
+}

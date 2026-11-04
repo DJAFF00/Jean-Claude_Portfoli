@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Profile {
+  id        Int     @id @default(1)
+  fullName  String
+  headline  String
+  bio       String
+  email     String
+  phone     String?
+  location  String?
+  github    String?
+  linkedin  String?
+  cvUrl     String?
+  available Boolean @default(true)
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String
+  description String   @default("")
+  imageUrl    String?
+  stack       String[]
+  liveUrl     String?
+  repoUrl     String?
+  published   Boolean  @default(false)
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
