@@ -42,3 +42,16 @@ export async function getProjectBySlug(slug: string) {
     return null;
   }
 }
+
+export async function getParcours() {
+  try {
+    const [experience, education, skills] = await Promise.all([
+      db.experience.findMany({ orderBy: { position: "asc" } }),
+      db.education.findMany({ orderBy: { position: "asc" } }),
+      db.skill.findMany({ orderBy: { position: "asc" } }),
+    ]);
+    return { experience, education, skills };
+  } catch {
+    return { experience: [], education: [], skills: [] };
+  }
+}

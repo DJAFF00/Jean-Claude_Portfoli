@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { getProfile, getPublishedProjects } from "@/lib/queries";
-import { experience, education, skills } from "@/lib/cv";
+import { getProfile, getPublishedProjects, getParcours } from "@/lib/queries";
 
 export const revalidate = 60;
 
 export default async function Home() {
-  const [profile, projects] = await Promise.all([getProfile(), getPublishedProjects(6)]);
+  const [profile, projects, { experience, education, skills }] = await Promise.all([getProfile(), getPublishedProjects(6), getParcours()]);
 
   return (
     <>
@@ -70,25 +69,30 @@ export default async function Home() {
             <h3 className="text-xl font-bold text-lime">Expérience</h3>
             <ul className="mt-6 space-y-5">
               {experience.map((e) => (
-                <li key={e.place} className="border-l-2 border-lime/60 pl-5">
+                <li key={e.id} className="border-l-2 border-lime/60 pl-5">
                   <p className="text-xl font-semibold">{e.place}</p>
-                  <p className="text-paper/70">{e.role}</p>
+                  <p className="text-paper/70">{e.role}{e.period ? `, ${e.period}` : ""}</p>
+                  {e.description && <p className="mt-2 max-w-md text-paper/70">{e.description}</p>}
                 </li>
               ))}
             </ul>
             <h3 className="mt-14 text-xl font-bold text-lime">Formation</h3>
-            <div className="mt-6 border-l-2 border-lime/60 pl-5">
-              <p className="text-xl font-semibold">{education.degree}</p>
-              <p className="text-paper/70">{education.school}, {education.years}</p>
-              <p className="mt-3 max-w-md text-paper/70">Projet de fin d'études : {education.thesis}</p>
-            </div>
+            <ul className="mt-6 space-y-5">
+              {education.map((e) => (
+                <li key={e.id} className="border-l-2 border-lime/60 pl-5">
+                  <p className="text-xl font-semibold">{e.degree}</p>
+                  <p className="text-paper/70">{e.school}{e.years ? `, ${e.years}` : ""}</p>
+                  {e.details && <p className="mt-3 max-w-md text-paper/70">{e.details}</p>}
+                </li>
+              ))}
+            </ul>
           </div>
           <div>
             <h3 className="text-xl font-bold text-lime">Compétences</h3>
             <dl className="mt-6 space-y-6">
               {skills.map((s) => (
-                <div key={s.group}>
-                  <dt className="font-semibold">{s.group}</dt>
+                <div key={s.id}>
+                  <dt className="font-semibold">{s.category}</dt>
                   <dd className="text-paper/70">{s.items}</dd>
                 </div>
               ))}

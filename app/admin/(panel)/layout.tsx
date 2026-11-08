@@ -11,6 +11,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         <div className="flex items-center gap-3 text-lg font-extrabold"><Mark className="h-7 w-7" /> Tableau de bord</div>
         <nav className="flex items-center gap-6 text-sm font-medium">
           <Link href="/admin" className="hover:text-lime">Projets</Link>
+          <Link href="/admin/parcours" className="hover:text-lime">Parcours</Link>
           <Link href="/admin/profile" className="hover:text-lime">Mon profil</Link>
           <Link href="/" target="_blank" className="hover:text-lime">Voir le site</Link>
           <form action={logout}><button className="text-paper/60 hover:text-lime">Se déconnecter</button></form>

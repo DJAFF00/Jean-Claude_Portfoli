@@ -98,3 +98,40 @@ export async function saveProfile(formData: FormData) {
   revalidatePath("/admin/profile");
   redirect("/admin/profile?saved=1");
 }
+
+type Kind = "experience" | "education" | "skill";
+const FIELDS: Record<Kind, string[]> = {
+  experience: ["place", "role", "period", "description"],
+  education: ["school", "degree", "years", "details"],
+  skill: ["category", "items"],
+};
+const REQUIRED: Record<Kind, string[]> = {
+  experience: ["place", "role"],
+  education: ["school", "degree"],
+  skill: ["category", "items"],
+};
+
+export async function saveItem(kind: Kind, formData: FormData) {
+  await requireAdmin();
+  const data: Record<string, string | number | null> = {};
+  for (const f of FIELDS[kind]) data[f] = REQUIRED[kind].includes(f) ? str(formData, f) : opt(formData, f);
+  if (REQUIRED[kind].some((f) => !data[f])) return;
+  data.position = Number(str(formData, "position")) || 0;
+  const id = str(formData, "id");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const model = db[kind] as any;
+  if (id) await model.update({ where: { id }, data });
+  else await model.create({ data });
+  revalidatePath("/");
+  revalidatePath("/admin/parcours");
+}
+
+export async function deleteItem(kind: Kind, formData: FormData) {
+  await requireAdmin();
+  const id = str(formData, "id");
+  if (!id) return;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (db[kind] as any).delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin/parcours");
+}
