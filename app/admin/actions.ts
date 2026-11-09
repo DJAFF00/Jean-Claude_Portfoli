@@ -3,6 +3,7 @@
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { put, del } from "@vercel/blob";
 import { db } from "@/lib/db";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 
@@ -12,6 +13,14 @@ const opt = (f: FormData, k: string) => str(f, k) || null;
 function slugify(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
     .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "projet";
+}
+
+const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
+const MAX_IMAGE = 4 * 1024 * 1024;
+const isBlob = (u?: string | null) => !!u && u.includes("blob.vercel-storage.com");
+async function dropBlob(u?: string | null) {
+  if (!isBlob(u)) return;
+  try { await del(u!); } catch {}
 }
 
 function refresh() {
@@ -40,12 +49,28 @@ export async function saveProject(formData: FormData) {
   const id = str(formData, "id");
   const title = str(formData, "title");
   if (!title) return;
+  const back = id ? `/admin/projects/${id}` : "/admin/projects/new";
+
+  const existing = id ? await db.project.findUnique({ where: { id } }) : null;
+  let imageUrl = opt(formData, "imageUrl");
+  if (formData.get("removeImage") === "on") imageUrl = null;
+
+  const file = formData.get("image");
+  if (file instanceof File && file.size > 0) {
+    if (!IMAGE_TYPES.includes(file.type) || file.size > MAX_IMAGE) redirect(`${back}?error=image`);
+    try {
+      const blob = await put(`projects/${slugify(title)}-${file.name}`, file, { access: "public", addRandomSuffix: true });
+      imageUrl = blob.url;
+    } catch {
+      redirect(`${back}?error=upload`);
+    }
+  }
 
   const data = {
     title,
     summary: str(formData, "summary"),
     description: str(formData, "description"),
-    imageUrl: opt(formData, "imageUrl"),
+    imageUrl,
     liveUrl: opt(formData, "liveUrl"),
     repoUrl: opt(formData, "repoUrl"),
     stack: str(formData, "stack").split(",").map((s) => s.trim()).filter(Boolean),
@@ -55,6 +80,7 @@ export async function saveProject(formData: FormData) {
 
   if (id) {
     await db.project.update({ where: { id }, data });
+    if (existing?.imageUrl && existing.imageUrl !== imageUrl) await dropBlob(existing.imageUrl);
   } else {
     let slug = slugify(title);
     if (await db.project.findUnique({ where: { slug } })) slug += "-" + Math.random().toString(36).slice(2, 6);
@@ -74,7 +100,9 @@ export async function togglePublish(id: string) {
 
 export async function deleteProject(id: string) {
   await requireAdmin();
+  const p = await db.project.findUnique({ where: { id } });
   await db.project.delete({ where: { id } });
+  await dropBlob(p?.imageUrl);
   refresh();
   revalidatePath("/admin");
 }

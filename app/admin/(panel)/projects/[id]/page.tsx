@@ -4,14 +4,15 @@ import ProjectForm from "@/components/ProjectForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function EditProject({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditProject({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> }) {
   const { id } = await params;
+  const { error } = await searchParams;
   const project = await db.project.findUnique({ where: { id } });
   if (!project) notFound();
   return (
     <>
       <h1 className="mb-8 text-3xl font-extrabold">Modifier « {project.title} »</h1>
-      <ProjectForm project={project} />
+      <ProjectForm project={project} error={error} />
     </>
   );
 }
