@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ProjectShot from "@/components/ProjectShot";
 import { getProfile, getPublishedProjects, getParcours } from "@/lib/queries";
 
 export const revalidate = 60;
@@ -26,37 +27,39 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Projets : cadre vert + écran blanc cassé, comme sur l'affiche */}
+      {/* Projets */}
       <section className="mx-auto max-w-6xl px-6">
-        <div className="border border-lime p-3 md:p-4">
-          <div className="bg-paper px-6 py-10 text-ink md:px-12 md:py-14">
-            <div className="flex items-end justify-between gap-6">
-              <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Ce que j'ai livré</h2>
-              <Link href="/projets" className="hidden font-semibold underline decoration-lime decoration-4 underline-offset-4 md:block">Tout voir</Link>
-            </div>
-            {projects.length === 0 ? (
-              <p className="mt-10 text-ink/60">Aucun projet publié pour l'instant. Ajoute-en depuis l'espace admin.</p>
-            ) : (
-              <ul className="mt-10 divide-y divide-ink/15">
-                {projects.map((p) => (
-                  <li key={p.id}>
-                    <Link href={`/projets/${p.slug}`} className="group grid gap-3 py-7 md:grid-cols-[1fr_auto] md:items-center">
-                      <div>
-                        <h3 className="text-2xl font-bold group-hover:underline group-hover:decoration-lime group-hover:decoration-4 group-hover:underline-offset-4">{p.title}</h3>
-                        <p className="mt-2 max-w-2xl text-ink/70">{p.summary}</p>
-                      </div>
-                      <ul className="flex flex-wrap gap-2 md:max-w-xs md:justify-end">
-                        {p.stack.slice(0, 4).map((s) => (
-                          <li key={s} className="bg-ink px-3 py-1 text-xs font-semibold text-paper">{s}</li>
-                        ))}
-                      </ul>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+        <div className="flex items-end justify-between gap-6">
+          <h2 className="text-4xl font-extrabold tracking-tight md:text-6xl">
+            Ce que j'ai <span className="font-script font-normal italic text-lime">livré.</span>
+          </h2>
+          <Link href="/projets" className="hidden font-semibold text-lime underline decoration-2 underline-offset-4 md:block">Tous les projets</Link>
         </div>
+        {projects.length === 0 ? (
+          <p className="mt-12 text-paper/60">Aucun projet publié pour l'instant.</p>
+        ) : (
+          <div className="mt-16 space-y-24 md:space-y-32">
+            {projects.map((p, i) => (
+              <article key={p.id} className="grid items-center gap-8 md:grid-cols-12 md:gap-14">
+                <Link href={`/projets/${p.slug}`} className={`group block md:col-span-7 ${i % 2 ? "md:order-2" : ""}`} aria-label={p.title}>
+                  <ProjectShot src={p.imageUrl} title={p.title} />
+                </Link>
+                <div className="md:col-span-5">
+                  <p className="font-script text-5xl text-lime">{String(i + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-2 text-3xl font-extrabold leading-tight md:text-4xl">{p.title}</h3>
+                  <p className="mt-4 text-lg leading-relaxed text-paper/75">{p.summary}</p>
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {p.stack.map((t) => <li key={t} className="border border-lime/50 px-3 py-1 text-sm text-lime">{t}</li>)}
+                  </ul>
+                  <div className="mt-8 flex flex-wrap items-center gap-6">
+                    <Link href={`/projets/${p.slug}`} className="btn btn-lime">Voir le projet</Link>
+                    {p.liveUrl && <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="font-semibold underline decoration-lime decoration-2 underline-offset-4">Site en ligne</a>}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Parcours */}

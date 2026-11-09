@@ -2,13 +2,17 @@ import type { Project } from "@prisma/client";
 import { saveProject } from "@/app/admin/actions";
 import ImageInput from "./ImageInput";
 
-export default function ProjectForm({ project, error }: { project?: Project; error?: string }) {
+export default function ProjectForm({ project, error, detail }: { project?: Project; error?: string; detail?: string }) {
   return (
     <form action={saveProject} className="space-y-6 bg-paper p-8 text-ink">
       {project && <input type="hidden" name="id" value={project.id} />}
       {error && (
         <p role="alert" className="border border-red-700 px-4 py-3 font-medium text-red-700">
-          {error === "image" ? "Image refusée : utilise un JPG, PNG, WebP ou AVIF de 4 Mo maximum." : "L'envoi de l'image a échoué. Vérifie que le stockage Blob est connecté sur Vercel."}
+          {error === "image"
+            ? "Image refusée : utilise un JPG, PNG, WebP ou AVIF de 4 Mo maximum."
+            : error === "token"
+            ? "Le stockage d'images n'est pas configuré : la variable BLOB_READ_WRITE_TOKEN est introuvable sur ce déploiement."
+            : `L'envoi de l'image a échoué.${detail ? " Détail : " + detail : ""}`}
         </p>
       )}
       <div>

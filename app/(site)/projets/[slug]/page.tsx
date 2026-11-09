@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ProjectShot from "@/components/ProjectShot";
 import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/lib/queries";
 
@@ -17,12 +18,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <ul className="mt-8 flex flex-wrap gap-2">
         {p.stack.map((s) => <li key={s} className="border border-lime/60 px-3 py-1 text-sm text-lime">{s}</li>)}
       </ul>
-      {p.imageUrl && (
-        <div className="mt-12 border border-lime p-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={p.imageUrl} alt={p.title} className="w-full" />
-        </div>
-      )}
+      <div className="group mt-12"><ProjectShot src={p.imageUrl} title={p.title} /></div>
       <div className="mt-12 max-w-2xl whitespace-pre-line text-lg leading-relaxed text-paper/85">{p.description}</div>
       <div className="mt-12 flex flex-wrap gap-4">
         {p.liveUrl && <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-lime">Voir le site</a>}

@@ -58,11 +58,14 @@ export async function saveProject(formData: FormData) {
   const file = formData.get("image");
   if (file instanceof File && file.size > 0) {
     if (!IMAGE_TYPES.includes(file.type) || file.size > MAX_IMAGE) redirect(`${back}?error=image`);
+    if (!process.env.BLOB_READ_WRITE_TOKEN) redirect(`${back}?error=token`);
     try {
       const blob = await put(`projects/${slugify(title)}-${file.name}`, file, { access: "public", addRandomSuffix: true });
       imageUrl = blob.url;
-    } catch {
-      redirect(`${back}?error=upload`);
+    } catch (e) {
+      console.error("Blob upload failed:", e);
+      const detail = e instanceof Error ? e.message.slice(0, 200) : "";
+      redirect(`${back}?error=upload&detail=${encodeURIComponent(detail)}`);
     }
   }
 
