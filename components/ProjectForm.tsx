@@ -1,5 +1,6 @@
 import type { Project } from "@prisma/client";
 import { saveProject } from "@/app/admin/actions";
+import ImageInput from "./ImageInput";
 
 export default function ProjectForm({ project, error }: { project?: Project; error?: string }) {
   return (
@@ -53,7 +54,7 @@ export default function ProjectForm({ project, error }: { project?: Project; err
         )}
         <div>
           <label className="label" htmlFor="image">Envoyer une image (JPG, PNG, WebP, 4 Mo max)</label>
-          <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className="field" />
+          <ImageInput />
         </div>
         <div>
           <label className="label" htmlFor="imageUrl">Ou coller le lien d'une image</label>
