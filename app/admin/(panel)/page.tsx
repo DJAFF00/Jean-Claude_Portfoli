@@ -10,7 +10,7 @@ export default async function AdminProjects() {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-extrabold">Projets</h1>
-        <Link href="/admin/projects/new" className="btn btn-lime">Ajouter un projet</Link>
+        <Link href="/admin/projects/new" className="btn btn-accent">Ajouter un projet</Link>
       </div>
       {projects.length === 0 ? (
         <p className="mt-10 text-paper/60">Aucun projet. Ajoute le premier avec le bouton ci-dessus.</p>
@@ -20,7 +20,7 @@ export default async function AdminProjects() {
             <li key={p.id} className="flex flex-wrap items-center justify-between gap-4 px-6 py-5">
               <div>
                 <p className="text-lg font-bold">{p.title}</p>
-                <p className={p.published ? "font-medium text-fern" : "text-ink/50"}>{p.published ? "Publié" : "Brouillon"}</p>
+                <p className={p.published ? "font-medium text-rust" : "text-ink/50"}>{p.published ? "Publié" : "Brouillon"}</p>
               </div>
               <div className="flex flex-wrap items-center gap-3 text-sm font-semibold">
                 <form action={togglePublish.bind(null, p.id)}><button className="underline">{p.published ? "Dépublier" : "Publier"}</button></form>

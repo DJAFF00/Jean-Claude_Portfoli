@@ -13,7 +13,7 @@ export default async function Messages() {
       ) : (
         <ul className="mt-8 space-y-4">
           {messages.map((m) => (
-            <li key={m.id} className={`bg-paper p-6 text-ink ${m.read ? "opacity-70" : "border-l-8 border-lime"}`}>
+            <li key={m.id} className={`bg-paper p-6 text-ink ${m.read ? "opacity-70" : "border-l-8 border-accent"}`}>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <p className="text-lg font-bold">{m.name}</p>
                 <p className="text-sm text-ink/60">{m.createdAt.toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "short", timeZone: "Africa/Porto-Novo" })}</p>

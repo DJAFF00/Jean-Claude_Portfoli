@@ -63,14 +63,14 @@ export default async function ParcoursAdmin() {
       <h1 className="text-3xl font-extrabold">Parcours</h1>
       {CONFIG.map((c) => (
         <section key={c.kind} className="mt-12">
-          <h2 className="mb-5 text-xl font-bold text-lime">{c.title}</h2>
+          <h2 className="mb-5 text-xl font-bold text-accent">{c.title}</h2>
           <div className="space-y-4">
             {lists[c.kind].map((it) => (
               <ItemForm key={it.id} kind={c.kind} fields={c.fields} item={it as unknown as Record<string, unknown>} />
             ))}
           </div>
           <details className="mt-5">
-            <summary className="cursor-pointer font-semibold text-lime">{c.add}</summary>
+            <summary className="cursor-pointer font-semibold text-accent">{c.add}</summary>
             <div className="mt-4"><ItemForm kind={c.kind} fields={c.fields} /></div>
           </details>
         </section>

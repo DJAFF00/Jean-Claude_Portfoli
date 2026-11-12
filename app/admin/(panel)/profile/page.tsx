@@ -21,8 +21,8 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
           {sp.error === "image" ? "Image refusée : JPG, PNG, WebP ou AVIF, 4 Mo maximum." : sp.error === "token" ? "Le stockage d'images n'est pas configuré (BLOB_READ_WRITE_TOKEN introuvable)." : "L'envoi de la photo a échoué."}
         </p>
       )}
-      {sp.saved && <p role="status" className="mb-6 border border-lime px-4 py-3 text-lime">Profil enregistré.</p>}
-      <form action={saveProfile} className="space-y-6 bg-paper p-8 text-ink">
+      {sp.saved && <p role="status" className="mb-6 border border-accent px-4 py-3 text-accent">Profil enregistré.</p>}
+      <form action={saveProfile} className="space-y-6 rounded-3xl bg-paper p-8 text-ink">
         <F id="fullName" label="Nom complet" def={p.fullName} req />
         <F id="headline" label="Titre affiché sous le nom" def={p.headline} req />
         <div>
@@ -36,7 +36,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={p.photoUrl} alt="" className="max-h-56 border border-ink/15" />
               <label className="flex items-center gap-2 text-sm font-medium">
-                <input type="checkbox" name="removePhoto" className="h-4 w-4 accent-[#3f5f0a]" /> Supprimer la photo
+                <input type="checkbox" name="removePhoto" className="h-4 w-4 accent-[#c2410c]" /> Supprimer la photo
               </label>
             </div>
           )}
@@ -54,7 +54,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
           <F id="linkedin" label="Lien LinkedIn" def={p.linkedin} type="url" />
         </div>
         <label className="flex items-center gap-3 font-semibold">
-          <input type="checkbox" name="available" defaultChecked={p.available} className="h-5 w-5 accent-[#3f5f0a]" />
+          <input type="checkbox" name="available" defaultChecked={p.available} className="h-5 w-5 accent-[#c2410c]" />
           Afficher « Disponible pour une mission »
         </label>
         <button className="btn">Enregistrer</button>

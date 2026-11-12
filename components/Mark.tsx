@@ -1,8 +1,7 @@
-export default function Mark({ className = "h-8 w-8" }: { className?: string }) {
+export default function Mark({ className = "h-9 w-9" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 40 40" className={className} aria-hidden>
-      <path d="M4 3 L36 20 L4 37 L11 20 Z" fill="none" stroke="#a3e635" strokeWidth="4" strokeLinejoin="round" />
-      <path d="M16 14 L27 20 L16 26 Z" fill="#a3e635" />
-    </svg>
+    <span aria-hidden className={`inline-flex items-center justify-center rounded-xl bg-accent font-script text-xl italic leading-none text-ink ${className}`}>
+      JH
+    </span>
   );
 }

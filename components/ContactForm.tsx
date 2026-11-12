@@ -7,7 +7,7 @@ export default function ContactForm() {
 
   if (state?.ok) {
     return (
-      <div role="status" className="bg-paper p-8 text-ink">
+      <div role="status" className="rounded-3xl bg-paper p-8 text-ink">
         <p className="text-2xl font-extrabold">Message envoyé.</p>
         <p className="mt-2 text-ink/75">Merci, je te réponds dès que possible.</p>
       </div>
@@ -15,7 +15,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={action} className="space-y-5 bg-paper p-8 text-ink">
+    <form action={action} className="space-y-5 rounded-3xl bg-paper p-8 text-ink">
       <div className="hidden" aria-hidden>
         <label>Ne pas remplir <input name="website" tabIndex={-1} autoComplete="off" /></label>
       </div>

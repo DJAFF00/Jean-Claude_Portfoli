@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #050805;
-  --color-moss: #0b120a;
-  --color-olive: #3f5f0a;
-  --color-fern: #5e8a00;
-  --color-lime: #a3e635;
-  --color-paper: #f2f3ee;
-  --font-sans: var(--font-jakarta), system-ui, sans-serif;
-  --font-script: var(--font-brush), cursive;
+  --color-ink: #0b0807;
+  --color-cocoa: #1a0e09;
+  --color-ember: #7c2d12;
+  --color-rust: #c2410c;
+  --color-accent: #ff6a00;
+  --color-paper: #f3ede7;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-script: var(--font-display), Georgia, serif;
 }
 
 html { scroll-behavior: smooth; }
@@ -16,18 +16,24 @@ html { scroll-behavior: smooth; }
 body {
   background-color: var(--color-ink);
   background-image:
-    radial-gradient(60rem 40rem at 100% 0%, rgb(94 138 0 / 0.55), transparent 65%),
-    radial-gradient(50rem 36rem at 0% 100%, rgb(63 95 10 / 0.6), transparent 65%),
-    linear-gradient(180deg, #050805, #0b120a 60%, #050805);
+    radial-gradient(60rem 40rem at 100% 0%, rgb(255 106 0 / 0.38), transparent 65%),
+    radial-gradient(50rem 36rem at 0% 100%, rgb(194 65 12 / 0.42), transparent 65%),
+    linear-gradient(180deg, #0b0807, #140b07 60%, #0b0807);
   background-attachment: fixed;
   color: var(--color-paper);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: var(--color-lime); color: var(--color-ink); }
+h1, h2, h3 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
 
-:focus-visible { outline: 2px solid var(--color-lime); outline-offset: 3px; }
+::selection { background: var(--color-accent); color: var(--color-ink); }
+
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
 
 @keyframes rise {
   from { opacity: 0; transform: translateY(1.25rem); }
@@ -41,23 +47,23 @@ body {
 }
 
 @layer components {
-/* Champs de l'admin */
-.field {
-  width: 100%;
-  background: #fff;
-  border: 1px solid rgb(5 8 5 / 0.18);
-  padding: 0.7rem 0.85rem;
-  color: var(--color-ink);
-}
-.field:focus { outline: 2px solid var(--color-lime); border-color: var(--color-ink); }
-.label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
-.btn {
-  display: inline-block; cursor: pointer; font-weight: 700;
-  padding: 0.75rem 1.4rem; background: var(--color-ink); color: var(--color-paper);
-  border: 1px solid var(--color-ink);
-  border-radius: 9999px;
-}
-.btn:hover { background: var(--color-olive); }
-.btn-lime { background: var(--color-lime); color: var(--color-ink); border-color: var(--color-lime); }
-.btn-lime:hover { background: var(--color-paper); }
+  .field {
+    width: 100%;
+    background: #fff;
+    border: 1px solid rgb(11 8 7 / 0.18);
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    color: var(--color-ink);
+  }
+  .field:focus { outline: 2px solid var(--color-accent); border-color: var(--color-ink); }
+  .label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
+  .btn {
+    display: inline-block; cursor: pointer; font-weight: 600;
+    padding: 0.75rem 1.5rem; background: var(--color-ink); color: var(--color-paper);
+    border: 1px solid var(--color-ink); border-radius: 9999px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn:hover { background: var(--color-rust); border-color: var(--color-rust); }
+  .btn-accent { background: var(--color-accent); color: var(--color-ink); border-color: var(--color-accent); }
+  .btn-accent:hover { background: var(--color-paper); border-color: var(--color-paper); }
 }

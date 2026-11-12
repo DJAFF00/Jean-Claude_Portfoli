@@ -4,7 +4,7 @@ import ImageInput from "./ImageInput";
 
 export default function ProjectForm({ project, error, detail }: { project?: Project; error?: string; detail?: string }) {
   return (
-    <form action={saveProject} className="space-y-6 bg-paper p-8 text-ink">
+    <form action={saveProject} className="space-y-6 rounded-3xl bg-paper p-8 text-ink">
       {project && <input type="hidden" name="id" value={project.id} />}
       {error && (
         <p role="alert" className="border border-red-700 px-4 py-3 font-medium text-red-700">
@@ -52,7 +52,7 @@ export default function ProjectForm({ project, error, detail }: { project?: Proj
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={project.imageUrl} alt="" className="max-h-48 border border-ink/15" />
             <label className="flex items-center gap-2 text-sm font-medium">
-              <input type="checkbox" name="removeImage" className="h-4 w-4 accent-[#3f5f0a]" /> Supprimer cette image
+              <input type="checkbox" name="removeImage" className="h-4 w-4 accent-[#c2410c]" /> Supprimer cette image
             </label>
           </div>
         )}
@@ -66,7 +66,7 @@ export default function ProjectForm({ project, error, detail }: { project?: Proj
         </div>
       </fieldset>
       <label className="flex items-center gap-3 font-semibold">
-        <input type="checkbox" name="published" defaultChecked={project?.published} className="h-5 w-5 accent-[#3f5f0a]" />
+        <input type="checkbox" name="published" defaultChecked={project?.published} className="h-5 w-5 accent-[#c2410c]" />
         Publier sur le site
       </label>
       <button className="btn">Enregistrer</button>

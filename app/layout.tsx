@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Caveat_Brush } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", weight: ["400", "500", "600", "700", "800"] });
-const brush = Caveat_Brush({ subsets: ["latin"], variable: "--font-brush", weight: "400" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const display = Instrument_Serif({ subsets: ["latin"], variable: "--font-display", weight: "400", style: ["normal", "italic"] });
 
 export const metadata: Metadata = {
   title: "Jean-Claude Houessou, développeur full stack",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${jakarta.variable} ${brush.variable}`}>
+    <html lang="fr" className={`${inter.variable} ${display.variable}`}>
       <body>{children}</body>
     </html>
   );

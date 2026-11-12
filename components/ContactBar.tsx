@@ -13,10 +13,10 @@ export default function ContactBar({ profile }: { profile: Profile }) {
         <a
           key={it.label}
           href={it.href}
-          className={`group block md:px-8 ${i > 0 ? "md:border-l md:border-lime/70" : "md:pl-0"}`}
+          className={`group block md:px-8 ${i > 0 ? "md:border-l md:border-accent/70" : "md:pl-0"}`}
         >
           <span className="block text-paper/80">{it.label}</span>
-          <span className="block break-all text-lg font-semibold text-lime group-hover:underline">{it.value}</span>
+          <span className="block break-all text-lg font-semibold text-accent group-hover:underline">{it.value}</span>
         </a>
       ))}
     </div>
