@@ -112,7 +112,23 @@ export async function deleteProject(id: string) {
 
 export async function saveProfile(formData: FormData) {
   await requireAdmin();
+  const existing = await db.profile.findUnique({ where: { id: 1 } });
+  let photoUrl = existing?.photoUrl ?? null;
+  if (formData.get("removePhoto") === "on") photoUrl = null;
+  const file = formData.get("image");
+  if (file instanceof File && file.size > 0) {
+    if (!IMAGE_TYPES.includes(file.type) || file.size > MAX_IMAGE) redirect("/admin/profile?error=image");
+    if (!process.env.BLOB_READ_WRITE_TOKEN) redirect("/admin/profile?error=token");
+    try {
+      const blob = await put(`profile/photo-${file.name}`, file, { access: "public", addRandomSuffix: true });
+      photoUrl = blob.url;
+    } catch (e) {
+      console.error("Photo upload failed:", e);
+      redirect("/admin/profile?error=upload");
+    }
+  }
   const data = {
+    photoUrl,
     fullName: str(formData, "fullName"),
     headline: str(formData, "headline"),
     bio: str(formData, "bio"),
@@ -125,6 +141,7 @@ export async function saveProfile(formData: FormData) {
     available: formData.get("available") === "on",
   };
   await db.profile.upsert({ where: { id: 1 }, update: data, create: { id: 1, ...data } });
+  if (existing?.photoUrl && existing.photoUrl !== photoUrl) await dropBlob(existing.photoUrl);
   refresh();
   revalidatePath("/admin/profile");
   redirect("/admin/profile?saved=1");
@@ -165,4 +182,19 @@ export async function deleteItem(kind: Kind, formData: FormData) {
   await (db[kind] as any).delete({ where: { id } });
   revalidatePath("/");
   revalidatePath("/admin/parcours");
+}
+
+export async function toggleRead(id: string) {
+  await requireAdmin();
+  const m = await db.message.findUnique({ where: { id } });
+  if (m) await db.message.update({ where: { id }, data: { read: !m.read } });
+  revalidatePath("/admin/messages");
+  revalidatePath("/admin", "layout");
+}
+
+export async function deleteMessage(id: string) {
+  await requireAdmin();
+  await db.message.delete({ where: { id } });
+  revalidatePath("/admin/messages");
+  revalidatePath("/admin", "layout");
 }

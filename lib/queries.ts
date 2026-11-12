@@ -12,6 +12,7 @@ export const fallbackProfile: Profile = {
   github: null,
   linkedin: null,
   cvUrl: null,
+  photoUrl: null,
   available: true,
 };
 

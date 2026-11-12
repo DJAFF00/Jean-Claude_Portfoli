@@ -7,22 +7,41 @@ export const revalidate = 60;
 export default async function Home() {
   const [profile, projects, { experience, education, skills }] = await Promise.all([getProfile(), getPublishedProjects(6), getParcours()]);
 
+  const firstName = profile.fullName.split(" ")[0];
+  const parts = profile.fullName.split(" ");
+  const initials = (parts[0][0] + (parts[parts.length - 1][0] ?? "")).toUpperCase();
+
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute -right-8 -top-10 select-none text-[26rem] font-extrabold leading-none text-olive/30">{"{ }"}</div>
-        <div aria-hidden className="absolute -left-28 top-80 h-60 w-60 -rotate-[14deg] rounded-[2.75rem] bg-gradient-to-br from-lime/70 to-olive opacity-60 blur-[3px]" />
-        <div className="relative mx-auto max-w-6xl px-6 pb-28 pt-20 md:pt-28">
-          <p className="rise text-lg text-paper/75" style={{ animationDelay: "0.05s" }}>{profile.headline}</p>
-          <h1 className="mt-5 text-[clamp(3rem,9.5vw,8rem)] font-extrabold leading-[0.95] tracking-tight">
-            <span className="rise block" style={{ animationDelay: "0.15s" }}>Des applications web</span>
-            <span className="rise block font-script font-normal italic text-lime" style={{ animationDelay: "0.3s" }}>qui tiennent la route.</span>
-          </h1>
-          <p className="rise mt-10 max-w-xl text-lg leading-relaxed text-paper/80" style={{ animationDelay: "0.45s" }}>{profile.bio}</p>
-          <div className="rise mt-10 flex flex-wrap items-center gap-5" style={{ animationDelay: "0.6s" }}>
-            <Link href="/projets" className="btn btn-lime">Voir mes projets</Link>
-            {profile.available && <span className="flex items-center gap-2 text-paper/75"><i className="h-2.5 w-2.5 rounded-full bg-lime" /> Disponible pour une mission</span>}
+      <section className="mx-auto max-w-6xl px-4 pb-28 pt-4 md:px-6">
+        <div className="relative overflow-hidden rounded-[2rem] border border-paper/10 bg-ink/70 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]">
+          <div aria-hidden className="absolute -left-24 top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(94,138,0,0.8),rgba(63,95,10,0.35)_55%,transparent)]" />
+          <div className="relative grid items-center md:grid-cols-12">
+            <div className="relative h-[22rem] md:col-span-5 md:h-[36rem]">
+              {profile.photoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={profile.photoUrl} alt={profile.fullName} className="absolute inset-0 h-full w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_72%,transparent)]" />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center font-script text-[11rem] leading-none text-lime/85 drop-shadow-[0_0_40px_rgba(163,230,53,0.35)]">{initials}</div>
+              )}
+            </div>
+            <div className="flex flex-col px-6 pb-12 md:col-span-7 md:items-end md:px-12 md:pb-0 md:text-right">
+              {profile.available && (
+                <p className="rise flex w-fit items-center gap-2 rounded-full border border-paper/15 bg-ink/60 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-paper/80" style={{ animationDelay: "0.05s" }}>
+                  <i className="h-2 w-2 rounded-full bg-lime" /> Disponible pour une mission
+                </p>
+              )}
+              <h1 className="rise mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight md:text-7xl" style={{ animationDelay: "0.15s" }}>
+                Salut, je suis <span className="font-script font-normal italic text-lime">{firstName}.</span>
+              </h1>
+              <p className="rise mt-5 max-w-lg text-sm font-medium uppercase tracking-[0.2em] text-paper/60" style={{ animationDelay: "0.3s" }}>{profile.headline}</p>
+              <p className="rise mt-6 max-w-md text-lg leading-relaxed text-paper/80" style={{ animationDelay: "0.45s" }}>{profile.bio}</p>
+              <div className="rise mt-9 flex flex-wrap gap-4 md:justify-end" style={{ animationDelay: "0.6s" }}>
+                <Link href="/projets" className="btn btn-lime">Voir mes projets →</Link>
+                <Link href="/#contact" className="btn border-paper/20 bg-ink/60 hover:border-paper hover:bg-paper hover:text-ink">Me contacter</Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

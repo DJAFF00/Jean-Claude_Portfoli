@@ -40,6 +40,7 @@ body {
   html { scroll-behavior: auto; }
 }
 
+@layer components {
 /* Champs de l'admin */
 .field {
   width: 100%;
@@ -54,7 +55,9 @@ body {
   display: inline-block; cursor: pointer; font-weight: 700;
   padding: 0.75rem 1.4rem; background: var(--color-ink); color: var(--color-paper);
   border: 1px solid var(--color-ink);
+  border-radius: 9999px;
 }
 .btn:hover { background: var(--color-olive); }
 .btn-lime { background: var(--color-lime); color: var(--color-ink); border-color: var(--color-lime); }
 .btn-lime:hover { background: var(--color-paper); }
+}

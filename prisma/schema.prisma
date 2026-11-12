@@ -19,6 +19,7 @@ model Profile {
   github    String?
   linkedin  String?
   cvUrl     String?
+  photoUrl  String?
   available Boolean @default(true)
 }
 
@@ -61,4 +62,13 @@ model Skill {
   category String
   items    String
   position Int    @default(0)
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
